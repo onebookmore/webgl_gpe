@@ -271,6 +271,29 @@ class GPE {
 
         this.ui = new UI(this);
     }
+    
+    drawbox(x,y,z){ 
+        var gl  =  this.gl; 
+        var scale = ((window.innerHeight < window.innerWidth)?window.innerHeight/1.1:window.innerWidth)/1.1;
+        gl.useProgram(this.prog_rk4);
+
+        gl.uniform1f(gl.getUniformLocation(this.prog_rk4, 'addPot_r'), z);
+
+        gl.uniform1i(gl.getUniformLocation(this.prog_rk4, 'addPot'), 1);
+        gl.uniform1f(gl.getUniformLocation(this.prog_rk4, 'addPot_x'), x/scale);
+        gl.uniform1f(gl.getUniformLocation(this.prog_rk4, 'addPot_y'), (scale-y)/scale);
+    }
+
+    spawnvortex(x,y,z){
+        var gl  =  this.gl; 
+        var scale = ((window.innerHeight < window.innerWidth)?window.innerHeight/1.1:window.innerWidth)/1.1;
+        
+        gl.useProgram(this.prog_step);        
+
+        gl.uniform1i(gl.getUniformLocation(this.prog_step, 'addVortex'), z);
+        gl.uniform1f(gl.getUniformLocation(this.prog_step, 'addVortex_x'), x/scale);
+        gl.uniform1f(gl.getUniformLocation(this.prog_step, 'addVortex_y'), (scale-y)/scale);
+    }
 }
 
 class UI {
@@ -497,6 +520,7 @@ class UI {
         this.setupControls(this.ctx.canvas);
     }
 }
+
 
 var gpe = new GPE();
 gpe.stepAndDraw();
